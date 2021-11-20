@@ -1,4 +1,7 @@
-import SerialPort from "serialport";
-import ReadLine from "@serialport/parser-readline";
+import { HardwareInterface } from "./hardware";
 
-const port = new SerialPort("COM4", { baudRate: 9600 })
+const hw = new HardwareInterface();
+
+hw.onLine((line) => {
+  hw.writeLine(line);
+});
