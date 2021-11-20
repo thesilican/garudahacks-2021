@@ -16,6 +16,7 @@ type RecipeItem = {
 export class Notion {
   client: Client;
   constructor() {
+    console.log("Creating Notion Client");
     this.client = new Client({ auth: env.token });
   }
 

@@ -1,15 +1,19 @@
 import { ArduinoInterface } from "./arduino";
 import { Notion } from "./notion";
+import util from "util";
+import { HTTPServer } from "./server";
 
 async function main() {
-  require("util").inspect.defaultOptions.depth = null;
+  util.inspect.defaultOptions.depth = null;
+
+  const server = new HTTPServer();
   // const arduino = new ArduinoInterface();
 
   // arduino.onLine((line) => {
   //   arduino.writeLine(line);
   // });
 
-  const notion = new Notion();
+  // const notion = new Notion();
   // for (let i = 0; i < 3; i++) {
   //   await notion.insertFridge({
   //     name: "Banana",
@@ -28,6 +32,6 @@ async function main() {
   //   ingredients: ["Happy", "Meal"],
   // });
   // await notion.deleteRecipe("Apple Pie");
-  await notion.deleteAllRecipes();
+  // await notion.deleteAllRecipes();
 }
 main();
