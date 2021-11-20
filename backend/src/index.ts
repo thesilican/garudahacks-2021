@@ -10,7 +10,10 @@ async function main() {
   const arduino = new ArduinoInterface();
 
   arduino.onLine((line) => {
-    arduino.writeLine(line);
+    console.log(JSON.stringify(line));
+    if (line === "time") {
+      arduino.writeLine(new Date().toTimeString());
+    }
   });
 
   // const notion = new Notion();
