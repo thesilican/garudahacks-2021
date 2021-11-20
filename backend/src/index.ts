@@ -1,25 +1,4 @@
-import { spawn } from "child_process";
-import { createInterface } from "readline";
-import { env } from "./env";
+import SerialPort from "serialport";
+import ReadLine from "@serialport/parser-readline";
 
-function writeLine(line: string) {
-  console.log("Write:", line);
-  child.stdin.write(line);
-}
-function handleLine(line: string) {
-  console.log("Read:", line);
-  const num = parseInt(line, 10);
-  writeLine((num + 1).toString());
-}
-
-const child = spawn(env.command, { shell: true });
-const rl = createInterface({ input: child.stdout });
-rl.on("line", (line) => {
-  if (line.startsWith("---")) {
-    return;
-  }
-  handleLine(line);
-});
-child.on("exit", () => {
-  console.log("Child program exited");
-});
+const port = new SerialPort("COM4", { baudRate: 9600 })
