@@ -8,7 +8,8 @@ function writeLine(line: string) {
 }
 function handleLine(line: string) {
   console.log("Read:", line);
-  writeLine(line);
+  const num = parseInt(line, 10);
+  writeLine((num + 1).toString());
 }
 
 const child = spawn(env.command, { shell: true });
