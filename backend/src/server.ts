@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import path from "path";
 import { Server } from "http";
 
 export class HTTPServer {
@@ -8,9 +9,13 @@ export class HTTPServer {
   constructor() {
     const app = express();
     app.use(express.json());
-    app.get("/backend", (req, res) => {
+    app.post("/api", (req, res) => {
       res.sendStatus(204);
       this.handler(req);
+    });
+    app.use("/", express.static(path.join(__dirname, "../frontend/dist")));
+    app.get("/", (req, res) => {
+      res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
     });
     const server = app.listen(8080, () => {
       console.log("Starting HTTP Server on port 8080");

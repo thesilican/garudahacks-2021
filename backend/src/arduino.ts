@@ -6,6 +6,7 @@ export class ArduinoInterface {
   onLine: (handleLine: (line: string) => void) => void;
   writeLine: (line: string) => void;
   constructor() {
+    console.log("Creating Arduino interface");
     if (env.dev) {
       // Pretend to be an arduino
       const rl = readline.createInterface({ input: process.stdin });

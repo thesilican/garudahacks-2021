@@ -6,14 +6,15 @@ import { HTTPServer } from "./server";
 async function main() {
   util.inspect.defaultOptions.depth = null;
 
-  const server = new HTTPServer();
-  // const arduino = new ArduinoInterface();
+  // const server = new HTTPServer();
+  const arduino = new ArduinoInterface();
 
-  // arduino.onLine((line) => {
-  //   arduino.writeLine(line);
-  // });
+  arduino.onLine((line) => {
+    arduino.writeLine(line);
+  });
 
   // const notion = new Notion();
+  // console.log(await notion.readIngredients());
   // for (let i = 0; i < 3; i++) {
   //   await notion.insertFridge({
   //     name: "Banana",
