@@ -8,9 +8,7 @@ function writeLine(line: string) {
 }
 function handleLine(line: string) {
   console.log("Read:", line);
-  setTimeout(() => {
-    writeLine(line);
-  }, 100);
+  writeLine(line);
 }
 
 const child = spawn(env.command, { shell: true });
