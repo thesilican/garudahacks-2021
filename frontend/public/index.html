@@ -2,17 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/sanitize.css/sanitize.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/sanitize.css/typography.min.css"
-      rel="stylesheet"
-    />
     <style>
       body {
         display: flex;
@@ -20,13 +11,25 @@
         align-items: center;
         justify-content: center;
       }
+      #scan {
+        margin: 16px;
+        padding: 16px;
+      }
+      video {
+        width: 300px;
+        height: 400px;
+      }
+      canvas {
+        width: 300px;
+        height: 400px;
+      }
     </style>
   </head>
   <body>
     <video id="video"></video>
-    <button id="scan" style="margin: 1rem; padding: 1rem">Scan</button>
+    <button id="scan">Scan</button>
     <p id="output"></p>
-    <canvas id="canvas"></canvas>
+    <canvas id="canvas" width="300" height="400"></canvas>
     <script type="module" src="../src/index.js"></script>
   </body>
 </html>

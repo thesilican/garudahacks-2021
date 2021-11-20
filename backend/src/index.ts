@@ -3,6 +3,11 @@ import { Notion } from "./notion";
 import util from "util";
 import { HTTPServer } from "./server";
 
+const COVER_IMGS = {
+  banana:
+    "https://images.unsplash.com/photo-1561058325-8c99b449e3b6?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb",
+};
+
 async function main() {
   util.inspect.defaultOptions.depth = null;
 
@@ -10,20 +15,20 @@ async function main() {
   const arduino = new ArduinoInterface();
 
   arduino.onLine((line) => {
-    console.log(JSON.stringify(line));
     if (line === "time") {
       arduino.writeLine(new Date().toTimeString());
     }
   });
 
-  // const notion = new Notion();
-  // console.log(await notion.readIngredients());
+  const notion = new Notion();
+  // console.log(await notion.readFridge());
   // for (let i = 0; i < 3; i++) {
-  //   await notion.insertFridge({
-  //     name: "Banana",
-  //     dateExpired: new Date(),
-  //     datePurchased: new Date(),
-  //   });
+  await notion.insertFridge({
+    name: "Banana",
+    coverImg: COVER_IMGS.banana,
+    dateExpires: new Date(),
+    datePurchased: new Date(),
+  });
   // }
   // notion.deleteFridge("Apple");
   // notion.deleteAllFridge();
