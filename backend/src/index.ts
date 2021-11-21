@@ -22,29 +22,29 @@ async function main() {
   let expiring: FridgeItem[] = [];
   let expiringState: string = "green";
 
-  // // Arduino Interface
-  // const arduino = new ArduinoInterface();
-  // arduino.onLine((line) => {
-  //   if (line === "get.reqxpString") {
-  //     if (expiring.length > 0) {
-  //       const text = expiring.map((x) => x.name).join(", ");
-  //       arduino.writeLine(text);
-  //     } else {
-  //       arduino.writeLine("No foods expiring soon");
-  //     }
-  //   } else if (line === "get.reqDate") {
-  //     const date = getDateString(new Date());
-  //     arduino.writeLine(date);
-  //   } else if (line === "get.reqTime") {
-  //     const raw = new Date().toTimeString();
-  //     const time = raw.match(/(\d\d:\d\d).+/)![1];
-  //     arduino.writeLine(time);
-  //   } else if (line === "get.reqEcoScore") {
-  //     arduino.writeLine(ecoScore.toFixed(1));
-  //   } else if (line === "get.LEDstate") {
-  //     arduino.writeLine(expiringState);
-  //   }
-  // });
+  // Arduino Interface
+  const arduino = new ArduinoInterface();
+  arduino.onLine((line) => {
+    if (line === "get.reqxpString") {
+      if (expiring.length > 0) {
+        const text = expiring.map((x) => x.name).join(", ");
+        arduino.writeLine(text);
+      } else {
+        arduino.writeLine("No foods expiring soon");
+      }
+    } else if (line === "get.reqDate") {
+      const date = getDateString(new Date());
+      arduino.writeLine(date);
+    } else if (line === "get.reqTime") {
+      const raw = new Date().toTimeString();
+      const time = raw.match(/(\d\d:\d\d).+/)![1];
+      arduino.writeLine(time);
+    } else if (line === "get.reqEcoScore") {
+      arduino.writeLine(ecoScore.toFixed(1));
+    } else if (line === "get.LEDstate") {
+      arduino.writeLine(expiringState);
+    }
+  });
 
   // HTTP Server
   // (to connect with mobile QR scanner)
