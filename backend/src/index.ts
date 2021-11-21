@@ -38,7 +38,8 @@ async function main() {
   });
 
   // const notion = new Notion();
-  // await notion.updateExpiringSoon(["1", "2", "3"]);
+  // await notion.updateEcoScore(Math.PI);
+  // await notion.updateExpiringSoon(["Fish - Today"]);
   // console.log(await notion.updateStore("CeilingMart", true));
   // console.log(await notion.readRecipes());
   // console.log(await notion.readFridge());
