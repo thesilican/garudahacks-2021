@@ -3,26 +3,26 @@ import { env } from "./env";
 import { getDateString } from "./util";
 
 // Read-write databases
-type FridgeItem = {
+export type FridgeItem = {
   name: string;
   coverImg: string;
   datePurchased: Date;
   dateExpires: Date;
 };
-type IngredientItem = {
+export type IngredientItem = {
   name: string;
   coverImg: string;
   shelfLife: number;
   ecoScore: number;
 };
-type RecipeItem = {
+export type RecipeItem = {
   name: string;
   ingredients: string[];
   timeToMake: number;
   ecoScore: number;
   recommended: boolean;
 };
-type StoreItem = {
+export type StoreItem = {
   name: string;
   stock: string[];
   ecoScore: number;
@@ -192,7 +192,10 @@ export class Notion {
     });
   }
 
-  async updateExpiringSoon(text: (string | undefined)[]) {
+  async updateExpiringSoon(items: FridgeItem[]) {
+    const text = items.map((x) => {
+      return x.name + " - " + x.dateExpires.toDateString();
+    });
     await this.client.blocks.update({
       block_id: "d75715feb59b40cea3a816411284ea63",
       type: "bulleted_list_item",
