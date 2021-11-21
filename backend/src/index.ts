@@ -31,7 +31,7 @@ async function main() {
       const raw = new Date().toTimeString();
       const time = raw.match(/(\d\d:\d\d).+/)![1];
       arduino.writeLine(time);
-    } else if (line === "get.ecoScore") {
+    } else if (line === "get.reqEcoScore") {
       const score = Math.floor(new Date().getTime() / 5000) % 10;
       arduino.writeLine(score.toString());
     }

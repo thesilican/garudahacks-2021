@@ -92,6 +92,7 @@ void loop(){
   }
 
   delay(1);
+  ++tick;
   //req all info and resets every 2 sec
   if (tick > 2000){
     Serial.println("get.reqxpString");
@@ -100,7 +101,7 @@ void loop(){
     reqDate = Serial.readStringUntil ('\n');
     Serial.println("get.reqTime"); // only Hrs and Min
     reqTime = Serial.readStringUntil ('\n');
-    Serial.println("get.reqEcoscore");
+    Serial.println("get.reqEcoScore");
     reqEcoscore = Serial.readStringUntil ('\n');
     tick = 0;
   }
