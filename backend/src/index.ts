@@ -34,6 +34,9 @@ async function main() {
     } else if (line === "get.reqEcoScore") {
       const score = Math.floor(new Date().getTime() / 5000) % 10;
       arduino.writeLine(score.toString());
+    } else if (line === "get.LEDstate") {
+      const index = Math.floor(new Date().getTime() / 5000) % 3;
+      arduino.writeLine(["red", "green", "yellow"][index]);
     }
   });
 
