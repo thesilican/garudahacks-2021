@@ -98,7 +98,11 @@ async function main() {
       }
       ecoScore += ingredient.ecoScore;
     }
-    await notion.updateEcoScore(ecoScore / fridge.length);
+    ecoScore /= fridge.length;
+    if (isNaN(ecoScore)) {
+      ecoScore = 0;
+    }
+    await notion.updateEcoScore(ecoScore);
 
     // Calculate food that is expiring soon
     // < 1 day = red
