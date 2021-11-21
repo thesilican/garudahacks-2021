@@ -40,7 +40,6 @@ export class Notion {
     const res = await this.client.databases.query({
       database_id: "7891599d569e4f8592a97345ea613db7",
     });
-    console.log(res);
     return res.results.map((x: any) => {
       const name = x.properties.Name.title[0]?.text.content;
       const coverImg = x.properties.cover.external?.url;
@@ -100,7 +99,6 @@ export class Notion {
     const res = await this.client.databases.query({
       database_id: "d7dd5f1c39c149f4a3c34957f69aec9b",
     });
-    console.log(res);
     return res.results.map((x: any) => {
       const name = x.properties.Name.title[0]?.text.content;
       const coverImg = x.cover.external.url;
