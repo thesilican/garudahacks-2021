@@ -38,9 +38,8 @@ export class Notion {
 
   async readFridge(): Promise<FridgeItem[]> {
     const res = await this.client.databases.query({
-      database_id: "74b5da5eb496408885b033a1c3f6fa37",
+      database_id: "7891599d569e4f8592a97345ea613db7",
     });
-    console.log(res);
     return res.results.map((x: any) => {
       const name = x.properties.Name.title[0]?.text.content;
       const coverImg = x.properties.cover.external?.url;
@@ -51,7 +50,7 @@ export class Notion {
   }
   async insertFridge(item: FridgeItem) {
     await this.client.pages.create({
-      parent: { database_id: "74b5da5eb496408885b033a1c3f6fa37" },
+      parent: { database_id: "7891599d569e4f8592a97345ea613db7" },
       cover: {
         type: "external",
         external: {
@@ -75,7 +74,7 @@ export class Notion {
   }
   async deleteFridge(name: string) {
     const res = await this.client.databases.query({
-      database_id: "74b5da5eb496408885b033a1c3f6fa37",
+      database_id: "7891599d569e4f8592a97345ea613db7",
       filter: {
         property: "Name",
         text: {
@@ -89,7 +88,7 @@ export class Notion {
   }
   async deleteAllFridge() {
     const res = await this.client.databases.query({
-      database_id: "74b5da5eb496408885b033a1c3f6fa37",
+      database_id: "7891599d569e4f8592a97345ea613db7",
     });
     for (const page of res.results) {
       await this.client.pages.update({ page_id: page.id, archived: true });
@@ -100,7 +99,6 @@ export class Notion {
     const res = await this.client.databases.query({
       database_id: "d7dd5f1c39c149f4a3c34957f69aec9b",
     });
-    console.log(res);
     return res.results.map((x: any) => {
       const name = x.properties.Name.title[0]?.text.content;
       const coverImg = x.cover.external.url;
