@@ -10,22 +10,21 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        color: #37352F;
-        font-family: 'Segoe UI',  sans-serif;
-
+        color: #37352f;
+        font-family: "Segoe UI", sans-serif;
       }
       #title {
-        display:flex;
-        box-sizing:border-box;
+        display: flex;
+        box-sizing: border-box;
         width: 100%;
         height: 50px;
-        background-color:#FBF3DB;
-        border: 3px solid #37352F;
-        border-bottom: 0px;  
+        background-color: #fbf3db;
+        border: 3px solid #37352f;
+        border-bottom: 0px;
         align-items: center;
         justify-content: center;
         font-weight: bold;
-        font-size:x-large;
+        font-size: x-large;
       }
       #scan {
         margin: 16px;
@@ -34,8 +33,8 @@
       #buttonContainer {
         width: 100%;
         height: 50px;
-        box-sizing:border-box;
-        display:grid;
+        box-sizing: border-box;
+        display: grid;
         grid-template-columns: 1fr 1fr;
       }
       button {
@@ -45,22 +44,22 @@
         border-top: 0px;
       }
       #add {
-        background-color: #DDEDEA;
-        border-right:1.5px solid;
+        background-color: #ddedea;
+        border-right: 1.5px solid;
       }
       #remove {
-        background-color: #FBE4E4;
-        border-left:1.5px solid;
+        background-color: #fbe4e4;
+        border-left: 1.5px solid;
       }
       #output {
-        padding-left:40px;
-        padding-right:40px;
+        padding-left: 40px;
+        padding-right: 40px;
         text-align: center;
       }
       video {
-        width:100%;
+        width: 100%;
         box-sizing: border-box;
-        border: 3px solid #37352F;
+        border: 3px solid #37352f;
       }
     </style>
   </head>
@@ -73,7 +72,9 @@
       <button id="add">Add to Fridge</button>
       <button id="remove">Remove from Fridge</button>
     </div>
-    <p id="output">Scan a food's QR code to add or remove it from your fridge.</p>
+    <p id="output">
+      Scan a food's QR code to add or remove it from your fridge.
+    </p>
     <script type="module" src="index.js"></script>
   </body>
 </html>

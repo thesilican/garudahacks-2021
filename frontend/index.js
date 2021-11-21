@@ -21,27 +21,28 @@ navigator.mediaDevices
         if (x[0] === undefined) {
           timesUndetected++;
           if (timesUndetected === 5) {
-            add.style["background-color"] = '#DDEDEA';
-            add.style["font-weight"] = 'normal';
-            remove.style["background-color"] = '#FBE4E4';
-            remove.style["font-weight"] = 'normal';
-            output.style["font-weight"] = 'normal';
+            add.style["background-color"] = "#DDEDEA";
+            add.style["font-weight"] = "normal";
+            remove.style["background-color"] = "#FBE4E4";
+            remove.style["font-weight"] = "normal";
+            output.style["font-weight"] = "normal";
 
-            output.innerText = "Scan a food's QR code to add or remove it from your fridge.";
+            output.innerText =
+              "Scan a food's QR code to add or remove it from your fridge.";
             item = null;
           }
         } else {
           timesUndetected = 0;
-          add.style["background-color"] = '#A6D5CD';
-          add.style["font-weight"] = 'bolder';
-          remove.style["background-color"] = '#FFB9B4';
-          remove.style["font-weight"] = 'bolder';
-          output.style["font-weight"] = 'bolder';
+          add.style["background-color"] = "#A6D5CD";
+          add.style["font-weight"] = "bolder";
+          remove.style["background-color"] = "#FFB9B4";
+          remove.style["font-weight"] = "bolder";
+          output.style["font-weight"] = "bolder";
 
           item = x[0].rawValue;
           output.innerText = item;
         }
-      })
+      });
     }, 100);
   });
 
@@ -50,14 +51,14 @@ function apiCall(command) {
     fetch("/api", {
       method: "POST",
       headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name: item,
-        command
-      })
-    }).then(response => {
+        command,
+      }),
+    }).then((response) => {
       if (response.status == "204") {
         if (command === "add") {
           alert("Successfully added " + item + " to your fridge!");
@@ -69,12 +70,11 @@ function apiCall(command) {
       }
     });
   }
-};
+}
 
 document.getElementById("add").addEventListener("click", () => {
   apiCall("add");
 });
-
 
 document.getElementById("remove").addEventListener("click", () => {
   apiCall("remove");
