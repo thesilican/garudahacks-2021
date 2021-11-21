@@ -162,7 +162,7 @@ async function main() {
           const index = sortedRecipes
             .slice(0, NUM_TO_RECOMMEND)
             .findIndex((x) => x.recipe.name === name);
-          const recommended = index !== -1;
+          const recommended = index !== -1 && fridge.length !== 0;
           if (recipe.recommended !== recommended) {
             return notion.updateRecipe(name, recommended);
           } else {
@@ -205,7 +205,7 @@ async function main() {
           const index = sortedStores
             .slice(0, NUM_TO_RECOMMEND)
             .findIndex((x) => x.store.name === name);
-          const recommended = index !== -1;
+          const recommended = index !== -1 && fridge.length !== 0;
           if (store.recommended !== recommended) {
             return notion.updateStore(name, recommended);
           } else {
