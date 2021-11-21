@@ -49,14 +49,20 @@ export class Notion {
     });
   }
   async insertFridge(item: FridgeItem) {
+    let cover: any  = item.coverImg.includes("secure.notion-static.com") ? {
+      type: "file",
+      file: {
+        url: item.coverImg
+      }
+    } : {
+      type: "external",
+      external: {
+        url: item.coverImg
+      }
+    };
     await this.client.pages.create({
       parent: { database_id: "7891599d569e4f8592a97345ea613db7" },
-      cover: {
-        type: "external",
-        external: {
-          url: item.coverImg,
-        },
-      },
+      cover,
       properties: {
         Name: {
           title: [{ text: { content: item.name } }],
