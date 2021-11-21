@@ -18,9 +18,9 @@ export class HTTPServer {
         res.sendStatus(400);
       }
     });
-    app.use("/", express.static(path.join(__dirname, "../frontend")));
+    app.use("/", express.static(path.join(process.cwd(), "../frontend")));
     app.get("/", (req, res) => {
-      res.sendFile(path.join(__dirname, "../frontend/index.html"));
+      res.sendFile(path.join(process.cwd(), "../frontend/index.html"));
     });
     const server = app.listen(8080, () => {
       console.log("Starting HTTP Server on port 8080");
