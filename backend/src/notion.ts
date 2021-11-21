@@ -19,11 +19,13 @@ type RecipeItem = {
   name: string;
   ingredients: string[];
   timeToMake: number;
+  ecoScore: number;
   recommended: boolean;
 };
 type StoreItem = {
   name: string;
   stock: string[];
+  ecoScore: number;
   recommended: boolean;
 };
 
@@ -123,8 +125,9 @@ export class Notion {
         (x: any) => x.name
       );
       const timeToMake = x.properties["Time to Make (min)"].number;
+      const ecoScore = x.properties["Eco Score"].number;
       const recommended = x.properties.Recommended.checkbox;
-      return { name, ingredients, timeToMake, recommended };
+      return { name, ingredients, timeToMake, ecoScore, recommended };
     });
   }
   async updateRecipe(name: string, recommended: boolean) {
@@ -151,8 +154,9 @@ export class Notion {
     return res.results.map((x: any) => {
       const name = x.properties.Name.title[0]?.text.content;
       const stock = x.properties.Stock.multi_select.map((x: any) => x.name);
+      const ecoScore = x.properties["Eco Score"].number;
       const recommended = x.properties.Recommended.checkbox;
-      return { name, stock, recommended };
+      return { name, stock, ecoScore, recommended };
     });
   }
   async updateStore(name: string, recommended: boolean) {
