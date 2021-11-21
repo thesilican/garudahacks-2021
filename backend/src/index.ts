@@ -22,138 +22,6 @@ async function main() {
   let expiring: FridgeItem[] = [];
   let expiringState: string = "green";
 
-  async function tick() {
-    console.log("Tick");
-    // Read up to date info from notion
-    [fridge, ingredients, recipes, stores] = await Promise.all([
-      notion.readFridge(),
-      notion.readIngredients(),
-      notion.readRecipes(),
-      notion.readStores(),
-    ]);
-
-    //   const promises: Promise<any>[] = [];
-
-    //   // Calculate eco score
-    //   ecoScore = 0;
-    //   for (const item of fridge) {
-    //     const ingredient = ingredients.find((x) => x.name === item.name);
-    //     if (!ingredient) {
-    //       throw "up";
-    //     }
-    //   }
-    //   promises.push(notion.updateEcoScore(ecoScore));
-
-    //   // Calculate food that is expiring soon
-    //   // < 1 day = red
-    //   // < 3 days = yellow
-    //   // >= 3 days = green
-    //   const msPerDay = 24 * 60 * 60 * 1000;
-    //   const now = new Date().getTime();
-    //   expiring = fridge
-    //     .slice()
-    //     .filter((x) => now - x.dateExpires.getTime() < 3 * msPerDay)
-    //     .sort((a, b) => a.dateExpires.getTime() - b.dateExpires.getTime());
-    //   if (fridge.find((x) => now - x.dateExpires.getTime() < 1 * msPerDay)) {
-    //     expiringState = "red";
-    //   } else if (
-    //     fridge.find((x) => now - x.dateExpires.getTime() < 3 * msPerDay)
-    //   ) {
-    //     expiringState = "yellow";
-    //   } else {
-    //     expiringState = "green";
-    //   }
-    //   promises.push(notion.updateExpiringSoon(expiring.slice(0, 3)));
-
-    //   const NUM_TO_RECOMMEND = 3;
-
-    //   // Recommendation algorithm to determine what recipes to recommend
-    //   // Based on:
-    //   //  - number of recipe ingredients that you have in your fridge
-    //   //  - number of recipe ingredients that you have and is expiring soon
-    //   //  - recipe eco score
-    //   type SortedRecipeItem = { recipe: RecipeItem; score: number };
-    //   const sortedRecipes: SortedRecipeItem[] = [];
-    //   for (const recipe of recipes) {
-    //     const haveIngredients = recipe.ingredients.filter((x) =>
-    //       fridge.find((f) => f.name === x)
-    //     ).length;
-    //     const totalIngredients = recipe.ingredients.length;
-    //     const percentIngredients = haveIngredients / totalIngredients;
-
-    //     const ecoScore = recipe.ecoScore;
-
-    //     const expiring = recipe.ingredients.filter((x) =>
-    //       fridge.find(
-    //         (f) => f.name === x && now - f.dateExpires.getTime() < 3 * msPerDay
-    //       )
-    //     ).length;
-
-    //     const score = percentIngredients * 20 + ecoScore * 1 + expiring * 5;
-    //     sortedRecipes.push({ recipe, score });
-    //   }
-    //   sortedRecipes.sort((a, b) => b.score - a.score);
-    //   promises.push(
-    //     // Read recipes
-    //     notion.readRecipes().then((recipes) =>
-    //       // Then recommend the best recipies from sortedRecipes
-    //       Promise.all(
-    //         recipes.map((recipe) => {
-    //           const name = recipe.name;
-    //           const index = sortedRecipes
-    //             .slice(0, NUM_TO_RECOMMEND)
-    //             .findIndex((x) => x.recipe.name === name);
-    //           return notion.updateRecipe(name, index !== -1);
-    //         })
-    //       )
-    //     )
-    //   );
-
-    //   // Recommendation algorithm to determine what stores to recommend
-    //   // Based on:
-    //   //  - number of ingredients that the store has that you are missing (for a recipe)
-    //   //  - eco score of store
-    //   type SortedStoreItem = { store: StoreItem; score: number };
-    //   const sortedStores: SortedStoreItem[] = [];
-    //   const missingIngredients: string[] = [];
-    //   for (const recipe of sortedRecipes.slice(0, NUM_TO_RECOMMEND)) {
-    //     for (const ingredient of recipe.recipe.ingredients) {
-    //       const result = fridge.find((x) => x.name === ingredient);
-    //       if (!result) {
-    //         missingIngredients.push(ingredient);
-    //       }
-    //     }
-    //   }
-    //   for (const store of stores) {
-    //     const missingIngredientCount = missingIngredients.filter((x) =>
-    //       store.stock.includes(x)
-    //     ).length;
-    //     const ecoScore = store.ecoScore;
-    //     const score = missingIngredientCount * 15 + ecoScore;
-    //     sortedStores.push({ store, score });
-    //   }
-    //   sortedStores.sort((a, b) => b.score - a.score);
-    //   promises.push(
-    //     // Read read stores
-    //     notion.readStores().then((stores) =>
-    //       // Then recommend the best stores from sortedStores
-    //       Promise.all(
-    //         stores.map((store) => {
-    //           const name = store.name;
-    //           const index = sortedStores
-    //             .slice(0, NUM_TO_RECOMMEND)
-    //             .findIndex((x) => x.store.name === name);
-    //           return notion.updateRecipe(name, index !== -1);
-    //         })
-    //       )
-    //     )
-    //   );
-
-    // await Promise.all(promises);
-  }
-  tick();
-  setInterval(tick, 5000);
-
   // // Arduino Interface
   // const arduino = new ArduinoInterface();
   // arduino.onLine((line) => {
@@ -210,5 +78,140 @@ async function main() {
       return false;
     }
   });
+
+  while (true) {
+    console.log("Tick");
+    // Read up to date info from notion
+    [fridge, ingredients, recipes, stores] = await Promise.all([
+      notion.readFridge(),
+      notion.readIngredients(),
+      notion.readRecipes(),
+      notion.readStores(),
+    ]);
+
+    // Calculate eco score
+    ecoScore = 0;
+    for (const item of fridge) {
+      const ingredient = ingredients.find((x) => x.name === item.name);
+      if (!ingredient) {
+        throw "up";
+      }
+      ecoScore += ingredient.ecoScore;
+    }
+    await notion.updateEcoScore(ecoScore / fridge.length);
+
+    // Calculate food that is expiring soon
+    // < 1 day = red
+    // < 3 days = yellow
+    // >= 3 days = green
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const now = new Date().getTime();
+    expiring = fridge
+      .slice()
+      .filter((x) => x.dateExpires.getTime() - now < 3 * msPerDay)
+      .sort((a, b) => a.dateExpires.getTime() - b.dateExpires.getTime());
+    if (fridge.find((x) => x.dateExpires.getTime() - now < 1 * msPerDay)) {
+      expiringState = "red";
+    } else if (
+      fridge.find((x) => x.dateExpires.getTime() - now < 3 * msPerDay)
+    ) {
+      expiringState = "yellow";
+    } else {
+      expiringState = "green";
+    }
+    await notion.updateExpiringSoon(expiring.slice(0, 3));
+
+    const NUM_TO_RECOMMEND = 3;
+
+    // Recommendation algorithm to determine what recipes to recommend
+    // Based on:
+    //  - number of recipe ingredients that you have in your fridge
+    //  - number of recipe ingredients that you have and is expiring soon
+    //  - recipe eco score
+    type SortedRecipeItem = { recipe: RecipeItem; score: number };
+    const sortedRecipes: SortedRecipeItem[] = [];
+    for (const recipe of recipes) {
+      const haveIngredients = recipe.ingredients.filter((x) =>
+        fridge.find((f) => f.name === x)
+      ).length;
+      const totalIngredients = recipe.ingredients.length;
+      const percentIngredients = haveIngredients / totalIngredients;
+
+      const ecoScore = recipe.ecoScore;
+
+      const expiring = recipe.ingredients.filter((x) =>
+        fridge.find(
+          (f) => f.name === x && f.dateExpires.getTime() - now < 3 * msPerDay
+        )
+      ).length;
+
+      const score = percentIngredients * 20 + ecoScore * 1 + expiring * 5;
+      sortedRecipes.push({ recipe, score });
+    }
+    sortedRecipes.sort((a, b) => b.score - a.score);
+    // Read recipes
+    await notion.readRecipes().then((recipes) =>
+      // Then recommend the best recipies from sortedRecipes
+      Promise.all(
+        recipes.map((recipe) => {
+          const name = recipe.name;
+          const index = sortedRecipes
+            .slice(0, NUM_TO_RECOMMEND)
+            .findIndex((x) => x.recipe.name === name);
+          const recommended = index !== -1;
+          if (recipe.recommended !== recommended) {
+            return notion.updateRecipe(name, recommended);
+          } else {
+            return new Promise<void>((res) => res());
+          }
+        })
+      )
+    );
+
+    // Recommendation algorithm to determine what stores to recommend
+    // Based on:
+    //  - number of ingredients that the store has that you are missing (for a recipe)
+    //  - eco score of store
+    type SortedStoreItem = { store: StoreItem; score: number };
+    const sortedStores: SortedStoreItem[] = [];
+    const missingIngredients: string[] = [];
+    for (const recipe of sortedRecipes.slice(0, NUM_TO_RECOMMEND)) {
+      for (const ingredient of recipe.recipe.ingredients) {
+        const result = fridge.find((x) => x.name === ingredient);
+        if (!result) {
+          missingIngredients.push(ingredient);
+        }
+      }
+    }
+    for (const store of stores) {
+      const missingIngredientCount = missingIngredients.filter((x) =>
+        store.stock.includes(x)
+      ).length;
+      const ecoScore = store.ecoScore;
+      const score = missingIngredientCount * 15 + ecoScore;
+      sortedStores.push({ store, score });
+    }
+    sortedStores.sort((a, b) => b.score - a.score);
+    // Read read stores
+    await notion.readStores().then((stores) =>
+      // Then recommend the best stores from sortedStores
+      Promise.all(
+        stores.map((store) => {
+          const name = store.name;
+          const index = sortedStores
+            .slice(0, NUM_TO_RECOMMEND)
+            .findIndex((x) => x.store.name === name);
+          const recommended = index !== -1;
+          if (store.recommended !== recommended) {
+            return notion.updateStore(name, recommended);
+          } else {
+            return new Promise<void>((res) => res());
+          }
+        })
+      )
+    );
+    console.log("Finished tick");
+    await new Promise((res) => setTimeout(res, 3000));
+  }
 }
 main();

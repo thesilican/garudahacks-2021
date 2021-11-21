@@ -193,30 +193,30 @@ export class Notion {
 
   async updateExpiringSoon(items: FridgeItem[]) {
     const text = items.map((x) => {
-      return x.name + " - " + x.dateExpires.toDateString();
+      const days = Math.ceil(
+        (x.dateExpires.getTime() - new Date().getTime()) / 86400000
+      );
+      return x.name + " - in " + days + " day" + (days === 1 ? "" : "s");
     });
     await this.client.blocks.update({
-      block_id: "d75715feb59b40cea3a816411284ea63",
+      block_id: "44e0a10f8bf54b66beafbdaacd9eb95e",
       type: "bulleted_list_item",
-      archived: !text[0],
       bulleted_list_item: {
-        text: [{ type: "text", text: { content: text[0] ?? "" } }],
+        text: [{ type: "text", text: { content: text[0] ?? " - " } }],
       },
     });
     await this.client.blocks.update({
-      block_id: "5bb37d6daec04c14a16071b6e7aa15b6",
+      block_id: "c05c72335b994a8790a66ca6b6f396da",
       type: "bulleted_list_item",
-      archived: !text[1],
       bulleted_list_item: {
-        text: [{ type: "text", text: { content: text[1] ?? "" } }],
+        text: [{ type: "text", text: { content: text[1] ?? " - " } }],
       },
     });
     await this.client.blocks.update({
-      block_id: "5c662412f7d94046b5b62eee70b1a571",
+      block_id: "f74d0d37314647dea2b510d8ed4fb9b2",
       type: "bulleted_list_item",
-      archived: !text[2],
       bulleted_list_item: {
-        text: [{ type: "text", text: { content: text[2] ?? "" } }],
+        text: [{ type: "text", text: { content: text[2] ?? " - " } }],
       },
     });
   }
