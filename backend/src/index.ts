@@ -21,7 +21,7 @@ async function main() {
   // });
 
   const notion = new Notion();
-  await notion.updateExpiringSoon(["hi"]);
+  await notion.updateExpiringSoon(["1", "2", "3"]);
   // console.log(await notion.updateStore("CeilingMart", true));
   // console.log(await notion.readRecipes());
   // console.log(await notion.readFridge());
