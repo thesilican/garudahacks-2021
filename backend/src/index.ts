@@ -12,23 +12,26 @@ async function main() {
   util.inspect.defaultOptions.depth = null;
 
   // const server = new HTTPServer();
-  const arduino = new ArduinoInterface();
+  // const arduino = new ArduinoInterface();
 
-  arduino.onLine((line) => {
-    if (line === "time") {
-      arduino.writeLine(new Date().toTimeString());
-    }
-  });
+  // arduino.onLine((line) => {
+  //   if (line === "time") {
+  //     arduino.writeLine(new Date().toTimeString());
+  //   }
+  // });
 
   const notion = new Notion();
+  await notion.updateExpiringSoon(["hi"]);
+  // console.log(await notion.updateStore("CeilingMart", true));
+  // console.log(await notion.readRecipes());
   // console.log(await notion.readFridge());
   // for (let i = 0; i < 3; i++) {
-  await notion.insertFridge({
-    name: "Banana",
-    coverImg: COVER_IMGS.banana,
-    dateExpires: new Date(),
-    datePurchased: new Date(),
-  });
+  // await notion.insertFridge({
+  //   name: "Banana",
+  //   coverImg: COVER_IMGS.banana,
+  //   dateExpires: new Date(),
+  //   datePurchased: new Date(),
+  // });
   // }
   // notion.deleteFridge("Apple");
   // notion.deleteAllFridge();
