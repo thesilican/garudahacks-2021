@@ -58,7 +58,15 @@ function apiCall(command) {
         command
       })
     }).then(response => {
-      alert(response.status);
+      if (response.status == "204") {
+        if (command === "add") {
+          alert("Successfully added " + item + " to your fridge!");
+        } else {
+          alert("Successfully removed " + item + " from your fridge!");
+        }
+      } else {
+        alert("Sorry, an error occurred.");
+      }
     });
   }
 };
