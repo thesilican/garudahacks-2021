@@ -5,7 +5,7 @@ navigator.mediaDevices
     audio: false,
     video: { facingMode: "environment" },
   })
-  .then((stream) => { 
+  .then((stream) => {
     const video = document.getElementById("video");
     const output = document.getElementById("output");
     const add = document.getElementById("add");
@@ -25,8 +25,8 @@ navigator.mediaDevices
             add.style["font-weight"] = 'normal';
             remove.style["background-color"] = '#FBE4E4';
             remove.style["font-weight"] = 'normal';
-            output.style["font-weight"]= 'normal';
-  
+            output.style["font-weight"] = 'normal';
+
             output.innerText = "Scan a food's QR code to add or remove it from your fridge.";
             item = null;
           }
@@ -36,7 +36,7 @@ navigator.mediaDevices
           add.style["font-weight"] = 'bolder';
           remove.style["background-color"] = '#FFB9B4';
           remove.style["font-weight"] = 'bolder';
-          output.style["font-weight"] = 'bolder';        
+          output.style["font-weight"] = 'bolder';
 
           item = x[0].rawValue;
           output.innerText = item;
@@ -45,7 +45,7 @@ navigator.mediaDevices
     }, 100);
   });
 
-function apiCall(command0) {
+function apiCall(command) {
   if (item) {
     fetch("/api", {
       method: "POST",
@@ -55,7 +55,7 @@ function apiCall(command0) {
       },
       body: JSON.stringify({
         name: item,
-        command: command0
+        command
       })
     }).then(response => {
       alert(response.status);
@@ -63,10 +63,11 @@ function apiCall(command0) {
   }
 };
 
-document.getElementById("add").onclick(() => {
+document.getElementById("add").addEventListener("click", () => {
   apiCall("add");
 });
 
-document.getElementById("remove").onclick(() => {
+
+document.getElementById("remove").addEventListener("click", () => {
   apiCall("remove");
 });
