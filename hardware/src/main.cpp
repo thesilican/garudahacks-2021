@@ -9,7 +9,7 @@ int displayView = 0;
 int tick = 0;
 
 //Requested variables
-int LEDstate = 0;
+String LEDstate = "null";
 String xpString = "null";
 String reqxpString = "null";
 String reqDate = "null";
@@ -58,38 +58,45 @@ void loop(){
       //if not, scroll every 500th tick
     }else if(displayView == 1){
       //date and time view
-      lcd.clear();
+      lcd.setCursor(0,0);
       lcd.print(reqDate);
       lcd.setCursor(0,1);
       lcd.print(reqTime);
       
     }else if(displayView == 2){
       //show eco score
-      lcd.clear();
+      lcd.setCursor(0,0);
       lcd.print("Eco Score:");
       lcd.setCursor(0,1);
       lcd.print(reqEcoscore);
     }
   //LEDS
-    if (LEDstate == 1){
+    if (LEDstate == "green"){
       digitalWrite(10,LOW);
       digitalWrite(9,LOW);
       digitalWrite(8,HIGH);
-    }else if (LEDstate == 2){
+    }else if (LEDstate == "yellow"){
       digitalWrite(10,LOW);
       digitalWrite(9,HIGH);
       digitalWrite(8,LOW);
-    }else if (LEDstate ==3) {
+    }else if (LEDstate == "red") {
       digitalWrite(10,HIGH);
       digitalWrite(9,LOW);
       digitalWrite(8,LOW);
     }
   //if button press, switch display view
   switchState = digitalRead(7);
-  if (switchState == 1){
-    ++ displayView;
+  if ((switchState == 1) && (prevSwitchState == 0)){
+    ++displayView;
     lcd.clear();
+    if (displayView > 2){
+      displayView = 0;
+      lcd.print("Expiry Items");
+      lcd.setCursor(0,1);
+      lcd.print(xpString);
+    }
   }
+  prevSwitchState = switchState;
 
   delay(1);
   ++tick;
@@ -103,21 +110,9 @@ void loop(){
     reqTime = Serial.readStringUntil ('\n');
     Serial.println("get.reqEcoScore");
     reqEcoscore = Serial.readStringUntil ('\n');
+    Serial.println("get.LEDstate");
+    LEDstate = Serial.readStringUntil('\n');
     tick = 0;
   }
-  // String input{};
-  // input = Serial.readStringUntil('\n');
-  
-  // lcd.print(input);
+
 }
-// Serial.println("Hi Brian");
-
-// delay(500);
-// if (Serial.available() != 0){
-//   input = Serial.readStringUntil('\n');
-// }else {
-//   input = "null";
-// }
-// Serial.println(input);
-
-// put your main code here, to run repeatedly:

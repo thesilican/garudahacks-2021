@@ -1,24 +1,72 @@
+let item;
+
 navigator.mediaDevices
   .getUserMedia({
     audio: false,
     video: { facingMode: "environment" },
   })
-  .then((stream) => {
-    const canvas = document.getElementById("canvas");
+  .then((stream) => { 
     const video = document.getElementById("video");
-    const scan = document.getElementById("scan");
     const output = document.getElementById("output");
+    const add = document.getElementById("add");
+    const remove = document.getElementById("remove");
     const barcodeDetector = new BarcodeDetector({ formats: ["qr_code"] });
 
     video.srcObject = stream;
     video.play();
 
-    scan.addEventListener("click", () => {
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      barcodeDetector.detect(canvas).then((x) => {
-        const value = x[0]?.rawValue;
-        output.innerText = value;
-      });
-    });
+    let timesUndetected = 0;
+    window.setInterval(() => {
+      barcodeDetector.detect(video).then((x) => {
+        if (x[0] === undefined) {
+          timesUndetected++;
+          if (timesUndetected === 5) {
+            add.style["background-color"] = '#DDEDEA';
+            add.style["font-weight"] = 'normal';
+            remove.style["background-color"] = '#FBE4E4';
+            remove.style["font-weight"] = 'normal';
+            output.style["font-weight"]= 'normal';
+  
+            output.innerText = "Scan a food's QR code to add or remove it from your fridge.";
+            item = null;
+          }
+        } else {
+          timesUndetected = 0;
+          add.style["background-color"] = '#A6D5CD';
+          add.style["font-weight"] = 'bolder';
+          remove.style["background-color"] = '#FFB9B4';
+          remove.style["font-weight"] = 'bolder';
+          output.style["font-weight"] = 'bolder';        
+
+          item = x[0].rawValue;
+          output.innerText = item;
+        }
+      })
+    }, 100);
   });
+
+function apiCall(command0) {
+  if (item) {
+    fetch("/api", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: item,
+        command: command0
+      })
+    }).then(response => {
+      alert(response.status);
+    });
+  }
+};
+
+document.getElementById("add").onclick(() => {
+  apiCall("add");
+});
+
+document.getElementById("remove").onclick(() => {
+  apiCall("remove");
+});
