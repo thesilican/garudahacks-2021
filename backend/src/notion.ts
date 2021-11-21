@@ -42,7 +42,7 @@ export class Notion {
     });
     return res.results.map((x: any) => {
       const name = x.properties.Name.title[0]?.text.content;
-      const coverImg = x.properties.cover.external?.url;
+      const coverImg = x.cover.external?.url ?? x.cover.file.url;
       const datePurchased = new Date(x.properties["Date Purchased"].date.start);
       const dateExpires = new Date(x.properties["Date Expires"].date.start);
       return { name, coverImg, datePurchased, dateExpires };
@@ -101,7 +101,7 @@ export class Notion {
     });
     return res.results.map((x: any) => {
       const name = x.properties.Name.title[0]?.text.content;
-      const coverImg = x.cover.external.url;
+      const coverImg = x.cover.external?.url ?? x.cover.file.url;
       const shelfLife = x.properties["Shelf Life"].number;
       const ecoScore = x.properties["Eco Score"].number;
       return {
