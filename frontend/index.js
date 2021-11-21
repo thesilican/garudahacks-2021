@@ -1,3 +1,5 @@
+let item;
+
 navigator.mediaDevices
   .getUserMedia({
     audio: false,
@@ -14,7 +16,6 @@ navigator.mediaDevices
     video.play();
 
     let timesUndetected = 0;
-    let item;
     window.setInterval(() => {
       barcodeDetector.detect(video).then((x) => {
         if (x[0] === undefined) {
@@ -44,7 +45,7 @@ navigator.mediaDevices
     }, 100);
   });
 
-document.getElementById("add").onclick(() => {
+function apiCall(command0) {
   if (item) {
     fetch("/api", {
       method: "POST",
@@ -54,24 +55,18 @@ document.getElementById("add").onclick(() => {
       },
       body: JSON.stringify({
         name: item,
-        command: "add"
+        command: command0
       })
-    })
+    }).then(response => {
+      alert(response.status);
+    });
   }
+};
+
+document.getElementById("add").onclick(() => {
+  apiCall("add");
 });
 
 document.getElementById("remove").onclick(() => {
-  if (item) {
-    fetch("/api", {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name: item,
-        command: "remove"
-      })
-    })
-  }
+  apiCall("remove");
 });
