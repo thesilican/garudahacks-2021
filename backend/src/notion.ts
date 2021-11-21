@@ -54,8 +54,8 @@ export class Notion {
       cover: {
         type: "external",
         external: {
-          url: item.coverImg
-        }
+          url: item.coverImg,
+        },
       },
       properties: {
         Name: {
@@ -82,7 +82,8 @@ export class Notion {
         },
       },
     });
-    for (const page of res.results) {
+    const page = res.results[0];
+    if (page) {
       await this.client.pages.update({ page_id: page.id, archived: true });
     }
   }
@@ -101,7 +102,7 @@ export class Notion {
     });
     return res.results.map((x: any) => {
       const name = x.properties.Name.title[0]?.text.content;
-      const coverImg = x.cover.external?.url ?? x.cover.file.url;
+      const coverImg = x.properties["Cover Image"].url;
       const shelfLife = x.properties["Shelf Life"].number;
       const ecoScore = x.properties["Eco Score"].number;
       return {
