@@ -10,26 +10,70 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        color: #37352F;
+        font-family: 'Segoe UI',  sans-serif;
+
+      }
+      #title {
+        display:flex;
+        box-sizing:border-box;
+        width: 100%;
+        height: 50px;
+        background-color:#FBF3DB;
+        border: 3px solid #37352F;
+        border-bottom: 0px;  
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size:x-large;
       }
       #scan {
         margin: 16px;
         padding: 16px;
       }
-      video {
-        width: 300px;
-        height: 400px;
+      #buttonContainer {
+        width: 100%;
+        height: 50px;
+        box-sizing:border-box;
+        display:grid;
+        grid-template-columns: 1fr 1fr;
       }
-      canvas {
-        width: 300px;
-        height: 400px;
+      button {
+        height: 50px;
+        box-sizing: border-box;
+        border: 3px solid #37352f;
+        border-top: 0px;
+      }
+      #add {
+        background-color: #DDEDEA;
+        border-right:1.5px solid;
+      }
+      #remove {
+        background-color: #FBE4E4;
+        border-left:1.5px solid;
+      }
+      #output {
+        padding-left:40px;
+        padding-right:40px;
+        text-align: center;
+      }
+      video {
+        width:100%;
+        box-sizing: border-box;
+        border: 3px solid #37352F;
       }
     </style>
   </head>
   <body>
+    <div id="title">
+      <span>Wise Fridge Scanner</span>
+    </div>
     <video id="video"></video>
-    <button id="scan">Scan</button>
-    <p id="output"></p>
-    <canvas id="canvas" width="300" height="400"></canvas>
+    <div id="buttonContainer">
+      <button id="add">Add to Fridge</button>
+      <button id="remove">Remove from Fridge</button>
+    </div>
+    <p id="output">Scan a food's QR code to add or remove it from your fridge.</p>
     <script type="module" src="index.js"></script>
   </body>
 </html>
