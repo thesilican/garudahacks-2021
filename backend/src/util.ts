@@ -4,3 +4,7 @@ export function getDateString(date: Date) {
   const day = date.getDate().toString().padStart(2);
   return `${year}-${month}-${day}`;
 }
+
+export function randomChoice<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
