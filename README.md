@@ -1,4 +1,4 @@
-# garudahacks-2021
+# Wise Fridge
 
 Repository for Garuda Hacks 2021 submission
 
